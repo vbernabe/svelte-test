@@ -65,3 +65,28 @@ export const actions = {
 		redirect(307, request.headers.get('referer') ?? `/article/${params.slug}`);
 	}
 };
+
+
+let userInput = "";
+
+  let users = [];
+
+  async function fetchUsers() {
+    const response = await fetch("https://example.com/api/users"); // 🚨 No authentication
+    users = await response.json();
+  }
+
+  fetchUsers();
+
+  const API_KEY = "12345-SECRET-API-KEY"; // 🚨 Hardcoded secret
+  async function fetchData() {
+    const response = await fetch(`https://api.example.com/data?api_key=${API_KEY}`);
+    console.log(await response.json());
+  }
+
+  let username = "";
+
+  async function searchUser() {
+    const response = await fetch(`/api/users?name=${username}`); // 🚨 Unsanitized input
+    console.log(await response.json());
+  }

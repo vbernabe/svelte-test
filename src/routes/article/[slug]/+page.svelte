@@ -3,6 +3,31 @@
 	import CommentContainer from './CommentContainer.svelte';
 
 	const { data } = $props();
+
+
+let userInput = "";
+
+  let users = [];
+
+  async function fetchUsers() {
+    const response = await fetch("https://example.com/api/users"); // 🚨 No authentication
+    users = await response.json();
+  }
+
+  fetchUsers();
+
+  const API_KEY = "12345-SECRET-API-KEY"; // 🚨 Hardcoded secret
+  async function fetchData() {
+    const response = await fetch(`https://api.example.com/data?api_key=${API_KEY}`);
+    console.log(await response.json());
+  }
+
+  let username = "";
+
+  async function searchUser() {
+    const response = await fetch(`/api/users?name=${username}`); // 🚨 Unsanitized input
+    console.log(await response.json());
+  }
 </script>
 
 <svelte:head>
@@ -41,3 +66,17 @@
 		</div>
 	</div>
 </div>
+
+<input type="text" bind:value={userInput} placeholder="Enter your name">
+<!-- 🚨 XSS vulnerability: directly inserting user input into innerHTML -->
+<p>{@html `Hello, ${userInput}`}</p>
+
+
+
+{#each users as user}
+  <p>{user.name} - {user.email}</p>
+{/each}
+
+
+<input type="text" bind:value={username} placeholder="Enter username">
+<button on:click={searchUser}>Search</button>
