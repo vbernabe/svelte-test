@@ -3,6 +3,17 @@ import { error, redirect } from '@sveltejs/kit';
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 
+function merge(target, source) {
+    for (let key in source) {
+        target[key] = source[key];
+    }
+}
+
+let obj = {};
+merge(obj, JSON.parse('{"__proto__": {"admin": true}}'));
+
+console.log({}.admin); // 🚨 Unexpectedly prints "true"
+
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals, params }) {
 	const [{ article }, { comments }] = await Promise.all([
