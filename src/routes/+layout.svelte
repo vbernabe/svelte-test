@@ -32,16 +32,28 @@
 
     async function executeCommand() {
         // 🚨 Vulnerable: Command Injection
-		alert("Command executed: " + command);
+		// alert("Command executed: " + command);
         const res = await fetch(`http://localhost:3000/execute?cmd=${command}`);
         commandOutput = await res.text();
     }
 
     async function showXSS() {
         // 🚨 Vulnerable: Directly injecting user input into HTML
-		alert("Message displayed: " + message);
+		// alert("Message displayed: " + message);
+		console.log(message)
+		alert(message)
         xssMessage = message;
     }
+
+	import { createHash } from "crypto";
+
+	const hash = createHash("md5").update("password123").digest("hex");
+	console.log("Hashed Password:", hash);
+
+	const deserialize = JSON.parse;
+
+	const testInput = '{ "toString": "alert(\'Hacked!\')" }';
+	console.log(deserialize(testInput)); // 🚨 Can execute unexpected code!
 </script>
 
 {#if $navigating}
