@@ -26,14 +26,3 @@ export async function load({ locals, url }) {
 		tags
 	};
 }
-
-const { exec } = require("child_process");
-
-const userInput = process.argv[2]; // User input from CLI
-exec(`ls ${userInput}`, (error, stdout, stderr) => {
-    if (error) {
-        console.error(`Error: ${error.message}`);
-        return;
-    }
-    console.log(`Output: ${stdout}`);
-});
